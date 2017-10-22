@@ -3,7 +3,7 @@
 	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
 	<skin_settings webvr_prev_next_hotspots="false"
 		tooltips_hotspots="true" tooltips_mapspots="false"
-		loadingtext="carregando..." deeplinking="false"
+		loadingtext="carregando..." deeplinking="true"
 	/>
 	<include url="skin/PIPE-vtourskin_design_flat_light-pr13.xml" />
 	<include url="map/map.xml" />
@@ -21,11 +21,15 @@
 			set(layer[get(spotname)].style, mapspot);
 			set(layer[get(spotname)].linkedscene, get(scene[get(i)].name));
 			set(layer[get(spotname)].keep, true);
-			set(layer[get(spotname)].x, 100);
-			set(layer[get(spotname)].y, 100);
+			if(data[get(scene[get(i)].name)], 
+				set(layer[get(spotname)].x, get(data[get(scene[get(i)].name)].x));
+				set(layer[get(spotname)].y, get(data[get(scene[get(i)].name)].y));
+				,
+				warning(calc('Parâmetros data da cena ' + scene[get(i)].name + ' não encontrados. Verificque o arquivo data.xml.'))
+			);
 		);
 	</action>
-	<scene name="Banheiro_suite" title="Banheiro suite" onstart="on_scene_loaded(get(xml.scene), 35.5);" havevrimage="true" thumburl="panos/Banheiro_suite.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Banheiro_suite" title="Banheiro suite" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Banheiro_suite.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Banheiro_suite.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
@@ -37,7 +41,7 @@
 			<cube url="panos/Banheiro_suite.tiles/vr/pano_%s.jpg" />
 		</image>
 	</scene>
-	<scene name="Banheiro" title="Banheiro" onstart="on_scene_loaded(get(xml.scene), 0);" havevrimage="true" thumburl="panos/Banheiro.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Banheiro" title="Banheiro" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Banheiro.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Banheiro.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
@@ -49,7 +53,7 @@
 			<cube url="panos/Banheiro.tiles/vr/pano_%s.jpg" />
 		</image>
 	</scene>
-	<scene name="Cozinha" title="Cozinha" onstart="on_scene_loaded(get(xml.scene), 0);" havevrimage="true" thumburl="panos/Cozinha.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Cozinha" title="Cozinha" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Cozinha.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Cozinha.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
@@ -61,7 +65,7 @@
 			<cube url="panos/Cozinha.tiles/vr/pano_%s.jpg" />
 		</image>
 	</scene>
-	<scene name="Quarto1" title="Quarto1" onstart="on_scene_loaded(get(xml.scene), 0);" havevrimage="true" thumburl="panos/Quarto1.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Quarto1" title="Quarto1" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Quarto1.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Quarto1.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
@@ -73,7 +77,7 @@
 			<cube url="panos/Quarto1.tiles/vr/pano_%s.jpg" />
 		</image>
 	</scene>
-	<scene name="Quarto2" title="Quarto2" onstart="on_scene_loaded(get(xml.scene), 0);" havevrimage="true" thumburl="panos/Quarto2.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Quarto2" title="Quarto2" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Quarto2.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Quarto2.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
@@ -85,7 +89,7 @@
 			<cube url="panos/Quarto2.tiles/vr/pano_%s.jpg" />
 		</image>
 	</scene>
-	<scene name="Sacada" title="Sacada" onstart="on_scene_loaded(get(xml.scene), 0);" havevrimage="true" thumburl="panos/Sacada.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Sacada" title="Sacada" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Sacada.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Sacada.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
@@ -97,7 +101,7 @@
 			<cube url="panos/Sacada.tiles/vr/pano_%s.jpg" />
 		</image>
 	</scene>
-	<scene name="Sala" title="Sala" onstart="on_scene_loaded(get(xml.scene), 0);" havevrimage="true" thumburl="panos/Sala.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Sala" title="Sala" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Sala.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Sala.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
@@ -109,7 +113,7 @@
 			<cube url="panos/Sala.tiles/vr/pano_%s.jpg" />
 		</image>
 	</scene>
-	<scene name="Suite" title="Suite" onstart="on_scene_loaded(get(xml.scene), 0);" havevrimage="true" thumburl="panos/Suite.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Suite" title="Suite" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Suite.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Suite.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
