@@ -156,6 +156,7 @@
     trace(calc('mapspot não encontrado: '+ spotname))
     );
 	  set(layer[radar].heading, %2);
+    trace(data[banheiro_suite].heading);
   </action>
   <!--floor hotspots -->
   <hotspot name="nadir-map"

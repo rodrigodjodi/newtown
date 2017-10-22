@@ -7,6 +7,7 @@
 	/>
 	<include url="skin/PIPE-vtourskin_design_flat_light-pr13.xml" />
 	<include url="map/map.xml" />
+	<include url="data.xml" />
 	<!-- startup action - load the first scene -->
 	<action name="startup" autorun="onstart">
 		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
@@ -24,7 +25,7 @@
 			set(layer[get(spotname)].y, 100);
 		);
 	</action>
-	<scene name="Banheiro_suite" title="Banheiro suite" onstart="on_scene_loaded(get(xml.scene), 0);" havevrimage="true" thumburl="panos/Banheiro_suite.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="Banheiro_suite" title="Banheiro suite" onstart="on_scene_loaded(get(xml.scene), 35.5);" havevrimage="true" thumburl="panos/Banheiro_suite.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Banheiro_suite.tiles/preview.jpg" />
 		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
