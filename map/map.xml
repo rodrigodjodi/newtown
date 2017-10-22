@@ -52,6 +52,7 @@
      visible="true"
      parent="sidebar"
      handcursor="false"
+     capture="false"
      
    
   />
@@ -131,12 +132,13 @@
     visible="false"
   />      
 
-  <plugin name="radar" keep="true"
-    url.html5="%HTMLPATH%/plugins/radar.js"
+  <layer name="radar" keep="true"
+    url="%HTMLPATH%/plugins/radar.js"
     align="lefttop" zorder="1" edge="center"
     fillalpha="0.5" fillcolor="0xFF5F3F"
     linewidth="1.0" linecolor="0xE0E0A0" linealpha="0.5"
     editmode="false" enabled="true" parent="map"
+    headingoffset="0"
            
 	/>  
   <!-- não funciona máscara em html5       
@@ -147,15 +149,90 @@
     def(spotname, string, calc('spot-'+'%1'));
     if(layer[get(spotname)],
       layer[get(spotname)].loadstyle(mapspot-visited);
-      copy(plugin[radar].x, layer[get(spotname)].x);
-      copy(plugin[radar].y, layer[get(spotname)].y);
+      copy(layer[radar].x, layer[get(spotname)].x);
+      copy(layer[radar].y, layer[get(spotname)].y);
       set(layer[activespot].parent, get(spotname));
     ,
     trace(calc('mapspot não encontrado: '+ spotname))
     );
-	  set(plugin[radar].heading, %2);
+	  set(layer[radar].heading, %2);
   </action>
+  <!--floor hotspots -->
+  <hotspot name="nadir-map"
+    url="planta-tour.png"
+    width="270" height="prop"
+    keep="true" 
+    zorder="1" 
+    distorted="true" 
+    enabled="false" 
+    alpha="0.8"
+    depth="750"
+    
+    atv="90"
+    ath="0"
+  />
+  <style name="nadirspot"
+      keep="true"
+      zorder="5"
+      depth="500"
+      distorted="true"
+      enabled="true"
+      url="map-sprite.png" crop="48|0|48|48"
+      width="24" height="24" alpha="1"
+      
+      onclick="mapspot_loadscene(get(linkedscene));"
+  />
+  <hotspot name="nadirspot-cozinha"
+    style="nadirspot"
+    linkedscene="cozinha"
+    atv="78.24"
+    ath="91.18"
+    ondown="draghotspot();"
+  />
+  <!--CODIGO DE DRAG-->
+  	<!-- textfield with information about the currently dragged hotspot -->
+	<layer name="hotspot_pos_info"
+    type="text"
+    html="drag the hotspots..."
+    css="font-family:Courier;"
+    padding="8"
+    align="righttop" x="10" y="10"
+    width="200"
+    enabled="false"
+    keep="true"
+    
+  />
 
+
+	<!-- the action for dragging the hotspot - call it once in the ondown event -->
+	<action name="draghotspot">
+		spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery, 'l');
+		sub(drag_adjustx, mouse.stagex, hotspotcenterx);
+		sub(drag_adjusty, mouse.stagey, hotspotcentery);
+		asyncloop(pressed,
+			sub(dx, mouse.stagex, drag_adjustx);
+			sub(dy, mouse.stagey, drag_adjusty);
+			screentosphere(dx, dy, ath, atv);
+			print_hotspot_pos();
+		  );
+	</action>
+	
+	<!-- show the xml code of the hotspot position -->
+	<action name="print_hotspot_pos"><![CDATA[
+		copy(print_ath, ath);
+		copy(print_atv, atv);
+		roundval(print_ath, 3);
+		roundval(print_atv, 3);
+    trace(calc('atv: ' + print_atv));
+    trace(calc('ath: ' + print_ath));
+		calc(layer[hotspot_pos_info].html, '&lt;hotspot name="' + name + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ath="' + print_ath + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atv="' + print_atv + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&gt;');
+	]]></action>
+  
+  
+  
+  
+  
+  
 
 </krpano>
 

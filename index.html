@@ -32,22 +32,22 @@
 
 
     <!-- ***ITENS COMUNS A TODOS PANORAMAS-->
-    <meta property="fb:admins " content="100000252753668 ">
-    <meta property="og:site_name " content="Pipe Studio ">
-    <meta property="og:type " content="article ">
-    <link rel="shortcut icon " href="../../favicon.ico ">
-    <meta charset="utf-8 ">
-    <meta name="viewport " content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, minimum-scale=1.0,
-            maximum-scale=1.0, minimal-ui ">
-    <meta name="apple-mobile-web-app-capable " content="yes ">
-    <meta name="apple-mobile-web-app-status-bar-style " content="black ">
-    <meta http-equiv="Content-Type " content="text/html;charset=utf-8 ">
-    <meta http-equiv="x-ua-compatible " content="IE=edge ">
-    <meta name="author " content="Pipe Studio ">
-    <meta property="article:author " content="https://www.facebook.com/PipeStudio ">
+    <meta property="fb:admins" content="100000252753668">
+    <meta property="og:site_name" content="Pipe Studio">
+    <meta property="og:type" content="article">
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, minimum-scale=1.0,
+            maximum-scale=1.0, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge ">
+    <meta name="author" content="Pipe Studio">
+    <meta property="article:author" content="https://www.facebook.com/PipeStudio">
     <!--CSS -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"
-        rel="stylesheet ">
+        rel="stylesheet">
     <style>
         @-ms-viewport {
             width: device-width;
@@ -115,13 +115,7 @@
             }
             //called by scene loading
             function setupScene(scene) {
-                var spotname = "spot-" + scene;
-                console.log(spotname);
                 history.pushState({ scene: scene }, scene, "?startscene=" + scene);
-                krpano().call("layer[spot-" + scene + "].loadstyle(mapspot-visited);");
-
-                krpano().call("copy(plugin[radar].x, layer[" + spotname + "].x); copy(plugin[radar].y, layer[" + spotname + "].y);");
-                krpano().call("set(layer[activespot].parent, " + spotname + ");");
                 saveToDB(scene);
             }
             function saveToDB(scene) {
