@@ -721,14 +721,13 @@
 				  );
 			  );
 
-			<!-- Don't need this
 			if(scene.count GT 1,
-			#set(layer[skin_btn_prev_fs].visible, true);
-			#set(layer[skin_btn_next_fs].visible, true);
-			#,
-			#set(layer[skin_btn_prev_fs].visible, false);
-			#set(layer[skin_btn_next_fs].visible, false);
-			#);-->
+			set(layer[skin_btn_prev_fs].visible, true);
+			set(layer[skin_btn_next_fs].visible, true);
+			,
+			set(layer[skin_btn_prev_fs].visible, false);
+			set(layer[skin_btn_next_fs].visible, false);
+			#);
 
 			txtadd(parentname, 'skin_thumb_', get(scene[get(xml.scene)].index));
 			if(layer[get(parentname)],

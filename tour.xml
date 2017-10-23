@@ -14,21 +14,7 @@
 		loadscene(get(startscene), null, MERGE);
 		if(startactions !== null, startactions() );
 	</action>
-	<action name="create-mapspots" autorun="preinit">
-		for(set(i,0), i LT scene.count, inc(i),
-		def(spotname, string, calc('spot-'+scene[get(i)].name));
-			addlayer(get(spotname));
-			set(layer[get(spotname)].style, mapspot);
-			set(layer[get(spotname)].linkedscene, get(scene[get(i)].name));
-			set(layer[get(spotname)].keep, true);
-			if(data[get(scene[get(i)].name)], 
-				set(layer[get(spotname)].x, get(data[get(scene[get(i)].name)].x));
-				set(layer[get(spotname)].y, get(data[get(scene[get(i)].name)].y));
-				,
-				warning(calc('Parâmetros data da cena ' + scene[get(i)].name + ' não encontrados. Verificque o arquivo data.xml.'))
-			);
-		);
-	</action>
+
 	<scene name="Banheiro_suite" title="Banheiro suite" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/Banheiro_suite.tiles/thumb.jpg" lat="" lng="" heading="">
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 		<preview url="panos/Banheiro_suite.tiles/preview.jpg" />
