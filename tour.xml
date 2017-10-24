@@ -1,4 +1,4 @@
-﻿<krpano version="1.19" title="Virtual Toooour">
+﻿<krpano version="1.19" title="New Town" idletime="0.5">
 	<include url="skin/vtourskin.xml" />
 	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
 	<skin_settings webvr_prev_next_hotspots="false"
@@ -10,7 +10,7 @@
 	<include url="data.xml" />
 	<!-- startup action - load the first scene -->
 	<action name="startup" autorun="onstart">
-		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
+		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[6].name); );
 		loadscene(get(startscene), null, MERGE);
 		if(startactions !== null, startactions() );
 	</action>

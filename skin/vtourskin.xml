@@ -965,7 +965,6 @@
 		roundval(a, 1);
 		set(adr, calc(adr + '?startscene=' + si + '&amp;startactions=lookat('+h+','+v+','+f+','+d+','+a+');'));
 		js( history.replaceState(null, document.title, get(adr)); );
-		<!-- toDO:use this entry point to activate an interaction tag-->
 	</action>
 
 

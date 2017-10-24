@@ -13,11 +13,11 @@
         })(window, document, 'script', 'dataLayer', 'GTM-W2Z3NC9');</script>
     <!-- End Google Tag Manager -->
     <!-- ***CAMPOS EDIÇÃO OBRIGATÓRIA-->
-    <title>Suite</title>
+    <title>New Town-Tour Decorado 3Q</title>
     <!-- Ex.: Edifício ....-->
-    <meta property="og:title" content="Suite">
+    <meta property="og:title" content="New Town-Tour Decorado 3Q">
     <!-- Ex.: Edifício ....-->
-    <meta itemprop="name" content="Suite">
+    <meta itemprop="name" content="New Town-Tour Decorado 3Q">
 
     <meta name="description" content="Panorama do projeto XXX contendo radar, mapa, e X pontos.">
     <meta property="og:description" content="Panorama do projeto XXX contendo radar, mapa, e X pontos.">
@@ -104,11 +104,12 @@
             var db = new PouchDB('scenes');
             embedpano({ swf: "tour.swf", xml: "tour.xml", target: "pano", html5: "prefer", initvars: { design: "flat" }, passQueryParameters: true });
             window.onpopstate = function (event) {
-                if (event.state) {
-                    krpano().call("loadscene(" + event.state.scene + ");");
-                } else { //fist scene doesn´t have a state, call startscene
-                    krpano().call("loadscene(get(startscene));");
-                }
+                var search = event.target.location.search;
+                var scene = search.split('&')[0].split('=')[1];
+                var action = search.split('&')[1].split('=')[1];
+                console.log(scene, action);
+                //krpano().call("loadscene(" + event.state.scene + ");");
+
             };
             function krpano() {
                 return document.getElementById("krpanoSWFObject");

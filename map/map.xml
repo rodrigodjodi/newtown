@@ -1,4 +1,5 @@
 <krpano debugmode="true" strict="true">
+<!--sidebar elements, events and actions-->
   <events name="sibebar_events" keep="true"
     onresize="sidebar-adjust"
   />
@@ -75,7 +76,7 @@
     set(layer[sidebar].visible, false);
   );
  </action>
-
+<!--map layers, events and actions -->
   <layer name="map"
     url="drawer.png"
     crop="0|264|320|296"
@@ -141,75 +142,7 @@
     headingoffset="0"
            
 	/>  
- 
-  <hotspot name="arc-direction" keep="true"
-    url="arc-direction.png"
-    zorder="4" 
-    scale="0.5"
-    depth="500"
-    edge="bottom"
-    enabled="false"
-    distorted="true"
-    atv="90"
-    alpha="1.0"
-    rz="0" 
-	/>
-  <events name="arc-direction-rotation" keep="true"
-    onviewchange="sub(rz, view.hlookat, data[get(xml.scene)].heading);set(hotspot[arc-direction].rz, get(rz));"
-  />
-
-  <action name="on_scene_loaded"> <!--toDO: fazer por aqui o setup de cena, tirando comandos krpano do script do html-->
-    def(mapspotname, string, calc('mapspot-'+ scene[get(xml.scene)].name));
-    if(layer[get(mapspotname)],
-      layer[get(mapspotname)].loadstyle(mapspot-visited);
-      copy(layer[radar].x, layer[get(mapspotname)].x);
-      copy(layer[radar].y, layer[get(mapspotname)].y);
-      set(layer[activespot].parent, get(mapspotname));
-      set(layer[activespot].visible, true);
-    ,
-      trace(calc('mapspot não encontrado: '+ mapspotname))
-    );
-    def(nadirspotname, string, calc('nadirspot-'+ scene[get(xml.scene)].name));
-    trace(nadirspotname);
-    if(hotspot[get(nadirspotname)],
-      set(hotspot[nadirspot-active].ox, get(data[get(xml.scene)].ox));
-      set(hotspot[nadirspot-active].oy, get(data[get(xml.scene)].oy));
-      set(hotspot[nadirspot-active].ath, get(data[get(xml.scene)].heading));
-      hotspot[get(nadirspotname)].loadstyle(nadirspot-visited);
-    );
-
-
-	  set(layer[radar].heading, calc(-1.0*data[get(xml.scene)].heading));
-	  set(hotspot[nadir-map].ath, get(data[get(xml.scene)].heading));
-	  set(hotspot[arc-direction].ath, get(data[get(xml.scene)].heading));
-	  set(hotspot[arc-direction].ox, get(data[get(xml.scene)].ox));
-	  set(hotspot[arc-direction].oy, get(data[get(xml.scene)].oy));
-    for(set(i,0), i LT scene.count, inc(i),
-      set(hotspot[calc('nadirspot-' + scene[get(i)].name)].ath, get(data[get(xml.scene)].heading))
-    );
-  </action>
-  <action name="create-mapspots" autorun="preinit">
-		for(set(i,0), i LT scene.count, inc(i),
-			def(mapspotname, string, calc('mapspot-'+scene[get(i)].name));
-			def(nadirspotname, string, calc('nadirspot-'+scene[get(i)].name));
-			addlayer(get(mapspotname));
-				layer[get(mapspotname)].loadstyle(mapspot);
-				set(layer[get(mapspotname)].linkedscene, get(scene[get(i)].name));
-			addhotspot(get(nadirspotname));
-				hotspot[get(nadirspotname)].loadstyle(nadirspot);
-				set(hotspot[get(nadirspotname)].linkedscene, get(scene[get(i)].name));
-			if(data[get(scene[get(i)].name)], 
-				set(layer[get(mapspotname)].x, get(data[get(scene[get(i)].name)].x));
-				set(layer[get(mapspotname)].y, get(data[get(scene[get(i)].name)].y));
-
-				set(hotspot[get(nadirspotname)].ox, get(data[get(scene[get(i)].name)].ox));
-				set(hotspot[get(nadirspotname)].oy, get(data[get(scene[get(i)].name)].oy));
-				,
-				warning(calc('Parâmetros data da cena ' + scene[get(i)].name + ' não encontrados. Verificque o arquivo data.xml.'))
-				);
-		);
-	</action>
-  <!--floor hotspots -->
+  <!--nadir hotspots, events and actions -->
   <hotspot name="nadir-map"
     url="planta-tour.png"
     width="270" height="prop"
@@ -256,6 +189,82 @@
       oy="0"
       
   />
+  <hotspot name="arc-direction" keep="true"
+    url="arc-direction.png"
+    zorder="4" 
+    scale="0.5"
+    depth="500"
+    edge="bottom"
+    enabled="false"
+    distorted="true"
+    atv="90"
+    alpha="1.0"
+    rz="0" 
+	/>
+  <events name="arc-direction-rotation" keep="true"
+    onviewchange="sub(rz, view.hlookat, data[get(xml.scene)].heading);set(hotspot[arc-direction].rz, get(rz));"
+  />
+<!--general events and actions--> 
+  <events name="tag_events" keep="true"
+    onnewpano="js(history.pushState(null, document.title, get(browser.location)););"
+    
+   />
+
+  <action name="on_scene_loaded"> 
+  <!--update mapspot state to visited, position radar and active mapspot at current position-->
+    def(mapspotname, string, calc('mapspot-'+ scene[get(xml.scene)].name));
+    if(layer[get(mapspotname)],
+      layer[get(mapspotname)].loadstyle(mapspot-visited);
+      copy(layer[radar].x, layer[get(mapspotname)].x);
+      copy(layer[radar].y, layer[get(mapspotname)].y);
+      set(layer[activespot].parent, get(mapspotname));
+      set(layer[activespot].visible, true);
+    ,
+      trace(calc('mapspot não encontrado: '+ mapspotname))
+    );
+  <!--update nadirspot state to visited, position active nadirspot at current position-->
+    def(nadirspotname, string, calc('nadirspot-'+ scene[get(xml.scene)].name));
+    if(hotspot[get(nadirspotname)],
+      hotspot[get(nadirspotname)].loadstyle(nadirspot-visited);
+      set(hotspot[nadirspot-active].ox, get(data[get(xml.scene)].ox));
+      set(hotspot[nadirspot-active].oy, get(data[get(xml.scene)].oy));
+      set(hotspot[nadirspot-active].ath, get(data[get(xml.scene)].heading));
+    );
+  <!--position the nadir arc direction hotspot-->
+	  set(hotspot[arc-direction].ox, get(data[get(xml.scene)].ox));
+	  set(hotspot[arc-direction].oy, get(data[get(xml.scene)].oy));
+  <!--get proper ath of elements using heading-->
+	  set(layer[radar].heading, calc(-1.0*data[get(xml.scene)].heading));
+	  set(hotspot[nadir-map].ath, get(data[get(xml.scene)].heading));
+	  set(hotspot[arc-direction].ath, get(data[get(xml.scene)].heading));
+    for(set(i,0), i LT scene.count, inc(i),
+      set(hotspot[calc('nadirspot-' + scene[get(i)].name)].ath, get(data[get(xml.scene)].heading))
+    );
+  </action>
+  <action name="create-mapspots" autorun="preinit">
+		for(set(i,0), i LT scene.count, inc(i),
+			def(mapspotname, string, calc('mapspot-'+scene[get(i)].name));
+			addlayer(get(mapspotname));
+				layer[get(mapspotname)].loadstyle(mapspot);
+				set(layer[get(mapspotname)].linkedscene, get(scene[get(i)].name));
+
+			def(nadirspotname, string, calc('nadirspot-'+scene[get(i)].name));
+			addhotspot(get(nadirspotname));
+				hotspot[get(nadirspotname)].loadstyle(nadirspot);
+				set(hotspot[get(nadirspotname)].linkedscene, get(scene[get(i)].name));
+
+			if(data[get(scene[get(i)].name)], 
+				set(layer[get(mapspotname)].x, get(data[get(scene[get(i)].name)].x));
+				set(layer[get(mapspotname)].y, get(data[get(scene[get(i)].name)].y));
+
+				set(hotspot[get(nadirspotname)].ox, get(data[get(scene[get(i)].name)].ox));
+				set(hotspot[get(nadirspotname)].oy, get(data[get(scene[get(i)].name)].oy));
+				,
+				warning(calc('Parâmetros data da cena ' + scene[get(i)].name + ' não encontrados. Verificque o arquivo data.xml.'))
+				);
+		);
+	</action>
+
 
 </krpano>
 
