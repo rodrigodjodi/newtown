@@ -110,7 +110,7 @@
 	<!-- when WebVR support is available show an EnterVR button -->
 	<action name="webvr_onavailable">
 		webvr.loadsettings();
-		delayedcall(0.5, tween(layer[webvr_enterbutton].alpha,1.0); );
+		<!--delayedcall(0.5, tween(layer[webvr_enterbutton].alpha,1.0); );-->
 	</action>
 	
 	
@@ -134,6 +134,7 @@
 
 		webvr_showbuttons();
 		webvr_hide_all_non_vr_layers();
+		webvr_hide_all_non_vr_hotspots();
 
 		<!-- when the screen size is unknown an no custom size is set, open the setup screen on entering the VR mode -->
 		if(webvr.ismobilevr == true AND !webvr.isfake AND ask_user_for_screensize == true AND webvr.mobilevr_screensize == 'auto',
@@ -156,6 +157,7 @@
 		webvr_show_fakemode_info(false);
 
 		webvr_restore_layers();
+		webvr_restore_hotspots();
 	</action>
 
 
@@ -168,7 +170,24 @@
 			  );
 		  );
 	</action>
-
+	<!-- added by djodi in 2017/10/25-->
+	<action name="webvr_hide_all_non_vr_hotspots">
+		for(set(i,0), i LT hotspot.count, inc(i),
+			copy(hs, hotspot[get(i)]);
+			if(hs.vronly == true,
+				set(hs.visible, true);
+			  );
+		  );
+	</action>
+	<!-- added by djodi in 2017/10/25-->
+	<action name="webvr_restore_hotspots">
+		for(set(i,0), i LT hotspot.count, inc(i),
+			copy(hs, hotspot[get(i)]);
+			if(hs.vronly == true,
+				set(hs.visible, false);
+			  );
+		  );
+	</action>
 	<action name="webvr_restore_layers">
 		for(set(i,0), i LT layer.count, inc(i),
 			copy(lr, layer[get(i)]);

@@ -102,7 +102,7 @@
     edge="center"
     alpha="1"
     zorder="7"
-    onclick="mapspot_loadscene(get(linkedscene));"
+    onclick="mapspot_loadscene(get(linkedscene));scenechange();"
     keep="true"
   />
   <style name="mapspot-visited"
@@ -115,7 +115,7 @@
     edge="center"
     alpha="1"
     zorder="7"
-    onclick="mapspot_loadscene(get(linkedscene));"
+    onclick="mapspot_loadscene(get(linkedscene));scenechange();"
   />
 
   <action name="mapspot_loadscene">
@@ -153,6 +153,8 @@
     alpha="0.8"
     depth="750"
     atv="90"
+    visible="false"
+    vronly="true"
   />
   <style name="nadirspot"
       keep="true"
@@ -163,7 +165,9 @@
       url="map-sprite.png" crop="48|0|48|48"
       width="24" height="24" alpha="1"
       atv="90"
-      onclick="mapspot_loadscene(get(linkedscene));"
+      onclick="mapspot_loadscene(get(linkedscene));scenechange();"
+      vronly="true"
+      visible="false"
   />
   <style name="nadirspot-visited"
       keep="true"
@@ -174,7 +178,9 @@
       url="map-sprite.png" crop="0|0|48|48"
       width="24" height="24" alpha="1"
       atv="90"
-      onclick="mapspot_loadscene(get(linkedscene));"
+      onclick="mapspot_loadscene(get(linkedscene));scenechange();"
+      vronly="true"
+      visible="false"
   />
   <hotspot name="nadirspot-active"
       keep="true"
@@ -187,6 +193,8 @@
       atv="90"
       ox="0"
       oy="0"
+      vronly="true"
+      visible="false"
       
   />
   <hotspot name="arc-direction" keep="true"
@@ -200,19 +208,65 @@
     atv="90"
     alpha="1.0"
     rz="0" 
+    vronly="true"
+    visible="false"
 	/>
   <events name="arc-direction-rotation" keep="true"
     onviewchange="sub(rz, view.hlookat, data[get(xml.scene)].heading);set(hotspot[arc-direction].rz, get(rz));"
   />
+<!--VR hotspot tooltip--> 
+  <hotspot name="vr_tooltip"
+    type="text"
+    ath="0" atv="0" edge="bottom" ty="-50"
+    distorted="true" renderer="webgl"
+    html="" keep="true" css="font-family:Roboto; font-size:24px; color:#FFFFFF;"
+    bg="false"
+    txtshadow="2 2 2 0x000000 1.0"
+    enabled="false"
+    vr_timeout="2000"
+    visible="false"
+    devices="html5.and.webgl"
+    zorder="2"
+  />
+
+  <style name="skin_hotspotstyle_vr"
+    url="vtourskin_hotspot.png" scale="0.4" edge="center" distorted="true"
+    tooltip=""
+    linkedscene=""
+    linkedscene_lookat=""
+    onclick="skin_hotspotstyle_click();scenechange();"
+    onover="tween(scale,0.55);"
+    onout="tween(scale,0.5);"
+    onloaded="if(linkedscene AND skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(vr_tooltips); );"
+  />
+
+<style name="vr_tooltips" 
+  onover="tween(scale,0.55);
+    copy(hotspot[vr_tooltip].html, tooltip);
+    copy(hotspot[vr_tooltip].ath, ath);
+    copy(hotspot[vr_tooltip].atv, atv);
+    set(hotspot[vr_tooltip].visible, true);
+    tween(hotspot[vr_tooltip].alpha, 1.0, 0.2);"
+  onout="tween(scale,0.5);
+    tween(hotspot[vr_tooltip].alpha, 0.0, 0.2, default, set(hotspot[vr_tooltip].visible,false); );"
+/>
+
+
 <!--general events and actions--> 
+  <action name="scenechange" scope="local">
+    trace(caller.style);
+    
+    trace(tag scene change here);
+    js(pushState(get(caller.linkedscene)));
+  </action>
+  
   <events name="tag_events" keep="true"
-    onnewpano="trace(tag pano change here);"
     onidle="trace(tag desktop interaction here);"
     
    />
 
   <action name="on_scene_loaded"> 
-  jscall(calc('document.title="'+ title + '-Decorado-' + scene[get(xml.scene)].title + '"'));
+  jscall(calc('document.title="'+ title + '-' + scene[get(xml.scene)].title + '"'));
   <!--update mapspot state to visited, position radar and active mapspot at current position-->
     def(mapspotname, string, calc('mapspot-'+ scene[get(xml.scene)].name));
     if(layer[get(mapspotname)],
@@ -266,7 +320,6 @@
 				);
 		);
 	</action>
-
 
 </krpano>
 
