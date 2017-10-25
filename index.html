@@ -103,12 +103,15 @@
         <script>
             var db = new PouchDB('scenes');
             embedpano({ swf: "tour.swf", xml: "tour.xml", target: "pano", html5: "prefer", initvars: { design: "flat" }, passQueryParameters: true });
+            //load pano on browser backbutton
             window.onpopstate = function (event) {
                 var search = event.target.location.search;
                 var scene = search.split('&')[0].split('=')[1];
-                var action = search.split('&')[1].split('=')[1];
-                console.log(scene, action);
-                //krpano().call("loadscene(" + event.state.scene + ");");
+                var view = search.split('&')[1].split('=')[1].slice(7,-2).split(',');
+                var vars = "view.hlookat="+view[0];
+                vars += "&view.vlookat="+view[1];
+                vars += "&view.fov="+view[2];
+               krpano().call("loadscene(" + scene + "," + vars + ", MERGE, BLEND(1));");
 
             };
             function krpano() {

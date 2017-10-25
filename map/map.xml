@@ -206,11 +206,13 @@
   />
 <!--general events and actions--> 
   <events name="tag_events" keep="true"
-    onnewpano="js(history.pushState(null, document.title, get(browser.location)););"
+    onnewpano="trace(tag pano change here);"
+    onidle="trace(tag desktop interaction here);"
     
    />
 
   <action name="on_scene_loaded"> 
+  jscall(calc('document.title="'+ title + '-Decorado-' + scene[get(xml.scene)].title + '"'));
   <!--update mapspot state to visited, position radar and active mapspot at current position-->
     def(mapspotname, string, calc('mapspot-'+ scene[get(xml.scene)].name));
     if(layer[get(mapspotname)],
