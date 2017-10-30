@@ -254,17 +254,23 @@
 
 <!--general events and actions--> 
   <action name="scenechange" scope="local">
-    trace(caller.style);
-    
-    trace(tag scene change here);
-    js(pushState(get(caller.linkedscene)));
+    js(krp_pushState(get(caller.linkedscene), get(caller.style)));
   </action>
   
   <events name="tag_events" keep="true"
-    onidle="trace(tag desktop interaction here);"
+    onidle="viewchange();"
     
    />
-
+  <action name="viewchange">
+    if(!webvr OR webvr.isenabled === false,
+      trace(mudança de vista);
+      def(obj, object);
+      def(obj.hlookat, number, get(view.hlookat));
+      def(obj.vlookat, number, get(view.vlookat));
+      def(obj.fov, number, get(view.fov));
+      js(krp_replaceState(get(scene[get(xml.scene)].name), get(obj)));
+    );
+  </action>
   <action name="on_scene_loaded"> 
   jscall(calc('document.title="'+ title + '-' + scene[get(xml.scene)].title + '"'));
   <!--update mapspot state to visited, position radar and active mapspot at current position-->

@@ -112,12 +112,10 @@
             });
             //load pano on browser backbutton
             window.onpopstate = function (event) {
-                var search = event.target.location.search;
-                var scene = search.split('&')[0].split('=')[1];
-                var view = search.split('&')[1].split('=')[1].slice(7,-2).split(',');
-                var vars = "view.hlookat="+view[0];
-                vars += "&view.vlookat="+view[1];
-                vars += "&view.fov="+view[2];
+                var scene = event.state.scene;
+                var vars = "view.hlookat=" + event.state.view.hlookat;
+                vars += "&view.vlookat="+ event.state.view.vlookat;
+                vars += "&view.fov="+ event.state.view.fov;
                krpano().call("loadscene(" + scene + "," + vars + ", MERGE, BLEND(1));");
 
             };
@@ -125,8 +123,13 @@
                 return document.getElementById("krpanoSWFObject");
             }
             //called by scene loading
-            function pushState(scene) {
-                history.pushState({ scene: scene }, scene, location.origin + "/?ambiente=" + scene);
+            function krp_pushState(scene, spot) {
+                history.pushState({ scene: scene, refspot:spot }, scene, location.origin + "/?ambiente=" + scene);
+            }
+            function krp_replaceState(scene, view) {
+                history.replaceState({ scene: scene, view:view },
+                                        scene,
+                                        location.origin + "/?ambiente=" + scene);
             }
             function saveToDB(scene) {
                 db.put({ _id: scene, visited: true }).then(function (doc) {
